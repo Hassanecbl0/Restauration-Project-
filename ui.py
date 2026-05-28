@@ -3,7 +3,6 @@ from constants import RESTAURANT_NAME
 
 
 def show_main_menu() -> str:
-    """Display the main menu and return the user's choice."""
     print_header(f"{RESTAURANT_NAME} - MANAGEMENT SYSTEM")
     options = [
         "1. Menu management",
