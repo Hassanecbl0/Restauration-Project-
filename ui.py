@@ -20,7 +20,6 @@ def show_main_menu() -> str:
 
 
 def show_menu_submenu() -> str:
-    """Sous-menu : Gestion du Menu."""
     print_header("MENU MANAGEMENT")
     options = [
         "1. View menu items",
@@ -37,7 +36,6 @@ def show_menu_submenu() -> str:
 
 
 def show_order_submenu() -> str:
-    """Sous-menu : Gestion des Commandes."""
     print_header("ORDER MANAGEMENT")
     options = [
         "1. New order",
@@ -54,7 +52,6 @@ def show_order_submenu() -> str:
 
 
 def show_table_submenu() -> str:
-    """Sous-menu : Gestion des Tables."""
     print_header("TABLE MANAGEMENT")
     options = [
         "1. View table status",
@@ -69,7 +66,6 @@ def show_table_submenu() -> str:
 
 
 def show_staff_submenu() -> str:
-    """Sous-menu : Gestion du Personnel."""
     print_header("STAFF MANAGEMENT")
     options = [
         "1. See all staff members",
@@ -85,9 +81,6 @@ def show_staff_submenu() -> str:
 
 
 def get_user_input(prompt: str, input_type: type = str, error_msg: str = None):
-    """
-    Demande une saisie avec validation de type.
-    """
     while True:
         try:
             value = input(f"{prompt} : ").strip()
@@ -101,7 +94,6 @@ def get_user_input(prompt: str, input_type: type = str, error_msg: str = None):
 
 
 def confirm_action(message: str = "Confirm this action") -> bool:
-    """Demande confirmation (o/n)."""
     while True:
         response = input(f"{message} ? (o/n) : ").strip().lower()
         if response in ["o", "oui", "y"]:
