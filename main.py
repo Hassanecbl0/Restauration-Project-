@@ -28,16 +28,16 @@ def seed_initial_data(menu_mgr: MenuManager, staff_mgr: StaffManager) -> None:
 
     # Personnel
     manager = Manager("Amadou Ouédraogo", "+22670000001", 250000, "operations")
-    serveur = Staff("Fatima Sawadogo", "+22675000002", "server", 85000)
-    cuisinier = Staff("Ibrahim Kaboré", "+22678000003", "chef", 110000)
+    server = Staff("Fatima Sawadogo", "+22675000002", "server", 85000)
+    chef = Staff("Ibrahim Kaboré", "+22678000003", "chef", 110000)
 
     manager.clock_in()
-    serveur.clock_in()
-    cuisinier.clock_in()
+    server.clock_in()
+    chef.clock_in()
 
     staff_mgr.add_employee(manager)
-    staff_mgr.add_employee(serveur)
-    staff_mgr.add_employee(cuisinier)
+    staff_mgr.add_employee(server)
+    staff_mgr.add_employee(chef)
 
 
 def handle_menu_management(menu_mgr: MenuManager) -> None:
