@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # ====================== CONFIGURATION DU RESTAURANT ======================
-RESTAURANT_NAME: str = "Chez BIT Restaurant"
+RESTAURANT_NAME: str = "Taste of Africa"
 RESTAURANT_ADDRESS: str = "Ouagadougou, Burkina Faso"
 TAX_RATE: float = 0.18          # TVA 18%
 CURRENCY: str = "XOF"
@@ -15,25 +15,25 @@ STAFF_FILE: Path = DATA_DIR / "staff.csv"
 
 # ====================== DONNÉES MÉTIER ======================
 ORDER_STATUS: tuple[str, ...] = (
-    "en attente", 
-    "en préparation", 
-    "servie", 
-    "payée", 
-    "annulée"
+    "waiting", 
+    "in preparation", 
+    "served", 
+    "paid", 
+    "cancelled"
 )
 
 STAFF_ROLES: tuple[str, ...] = (
-    "serveur", 
-    "cuisinier", 
+    "server", 
+    "chef", 
     "manager", 
-    "caissier"
+    "cashier"
 )
 
 MENU_CATEGORIES: tuple[str, ...] = (
-    "entrée", 
-    "plat principal", 
+    "starter", 
+    "main course", 
     "dessert", 
-    "boisson"
+    "drink"
 )
 
 # ====================== LIMITES & CONTRAINTES ======================
