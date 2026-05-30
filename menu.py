@@ -4,10 +4,10 @@ from constants import MENU_CATEGORIES
 import file_handler
 class MenuManager:
     def __init__(self) -> None:
-        self.items: List[MenuItem] = []
+        self.__items: List[MenuItem] = []
     def add_item(self, item: MenuItem) -> None:
         self.__items.append(item)
-    def remove_item(self, item_id:str) -> bool:
+    def remove_item(self, item_id: str) -> bool:
         for i, item in enumerate(self.__items):
             if item.item_id == item_id:
                 self.__items.pop(i)
@@ -20,13 +20,12 @@ class MenuManager:
         return None
     def get_item_by_category(self, category: str) ->List[MenuItem]:
         if category not in MENU_CATEGORIES:
-            return[]
-        else:
-            return[item for item in self.__items if item.available]
+            return []
+        return [item for item in self.__items if item.category == category and item.available]
     def get_available_items(self) -> List[MenuItem]:
         return[item for item in self.__items if item.available] 
     def display_full_menu(self) -> None:
-        print("/n" + "=" * 60)
+        print("\n" + "=" * 60)
         print("RESTAURANT MENU".center(60))
         print("=" * 60)
         for category in MENU_CATEGORIES:
@@ -39,7 +38,7 @@ class MenuManager:
     def save(self) -> None:
         file_handler.save_menu_to_json(self.__items)
     def load(self) -> None:
-        data = file_handler.load_menu_from_json()
+        data = file_handler.load_menu_from_json() 
         self.__items.clear()
         for item_data in data:
             if item_data.get("type") == "dish":
