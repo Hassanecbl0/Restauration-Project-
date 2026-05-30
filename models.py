@@ -1,6 +1,6 @@
 import datetime
 from typing import List, Dict, Any
-from constants import ORDER_STATUS, MENU_CATEGORIES, MAX_TABLE_NUMBER, STAFF_ROLES, TAX_RATE
+from sre_constants import ORDER_STATUS, MENU_CATEGORIES, MAX_TABLE_NUMBER, STAFF_ROLES, TAX_RATE
 
 
 # ─────────────────────────────────────────
@@ -172,7 +172,8 @@ class Dish(MenuItem):
 class Drink(MenuItem):
     def __init__(self, item_id: str, name: str, price: float,
                  volume_ml: int, alcoholic: bool) -> None:
-        super().__init__(item_id, name, price, "boisson")
+        # CORRECTION 3 : "boisson" remplacé par "drink" pour correspondre à MENU_CATEGORIES
+        super().__init__(item_id, name, price, "drink")
         self.volume_ml: int = volume_ml
         self.alcoholic: bool = alcoholic
 
@@ -228,6 +229,48 @@ class Order:
 
     def add_note(self, item_name: str, note: str) -> None:
         self.notes[item_name] = note
+
+    # CORRECTION 4 : méthode to_dict() ajoutée — utilisée par orders.py pour sauvegarder
+    def to_dict(self) -> dict:
+        return {
+            "order_id": self.order_id,
+            "table_number": self.table_number,
+            "server_name": self.server_name,
+            "status": self.status,
+            "timestamp": self.timestamp,
+            "notes": self.notes,
+            "items": [
+                {
+                    "item": entry["item"].to_dict(),
+                    "quantity": entry["quantity"],
+                }
+                for entry in self.items
+            ],
+        }
+
+    # CORRECTION 5 : méthode from_dict() ajoutée — utilisée par orders.py pour charger
+    @classmethod
+    def from_dict(cls, data: dict) -> "Order":
+        order = cls(
+            order_id=data["order_id"],
+            table_number=data["table_number"],
+            server_name=data["server_name"],
+        )
+        order.status = data.get("status", ORDER_STATUS[0])
+        order.timestamp = data.get("timestamp", order.timestamp)
+        order.notes = data.get("notes", {})
+        for entry in data.get("items", []):
+            item_data = entry["item"]
+            # Reconstruction d'un MenuItem générique à partir du dict sauvegardé
+            item = MenuItem(
+                item_id=item_data["id"],
+                name=item_data["name"],
+                price=item_data["price"],
+                category=item_data["category"],
+            )
+            item.available = item_data.get("available", True)
+            order.items.append({"item": item, "quantity": entry["quantity"]})
+        return order
 
     def __str__(self) -> str:
         lines = [f"Commande #{self.order_id} | Table {self.table_number} "
