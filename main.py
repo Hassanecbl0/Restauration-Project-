@@ -1,13 +1,13 @@
 import sys
 
-from constants import (MENU_FILE, ORDERS_FILE, STAFF_FILE, 
+from constants import (MENU_FILE, ORDERS_FILE, STAFF_FILE,
                        TAX_RATE, RESTAURANT_NAME)
 
 from models import Dish, Drink, Staff, Manager, Customer
 from menu import MenuManager
 from Orders import OrderManager, TableManager
-from staff import StaffManager
-from reports import generate_daily_report, print_receipt
+from Staff import StaffManager                         
+from repports import generate_daily_report, print_receipt  
 from ui import (show_main_menu, show_menu_submenu, show_order_submenu,
                 show_table_submenu, show_staff_submenu,
                 get_user_input, confirm_action)
@@ -54,7 +54,7 @@ def handle_menu_management(menu_mgr: MenuManager) -> None:
             prep_time = get_user_input("Preparation time (min)", int)
 
             ingredients = [i.strip() for i in ingredients_str.split(",")]
-            dish = Dish(item_id, name, price, "Main menu", ingredients, prep_time)
+            dish = Dish(item_id, name, price, "main course", ingredients, prep_time)  # FIX: était "Main menu" (invalide)
             menu_mgr.add_item(dish)
             print(f"✓ '{name}' added to the menu.")
         elif choice == "0":
@@ -107,7 +107,7 @@ def handle_table_management(table_mgr: TableManager) -> None:
         choice = show_table_submenu()
         if choice == "1":
             table_mgr.display_table_status()
-        elif choice == "2": 
+        elif choice == "2":
             table_num = get_user_input("Number of table", int)
             customer_name = get_user_input("Customer name")
             phone = get_user_input("Phone number")
@@ -116,7 +116,7 @@ def handle_table_management(table_mgr: TableManager) -> None:
                 print(f"✓ Table {table_num} attributed to {customer_name}.")
             else:
                 print("✗ Cannot attribute this table (already occupied or not found).")
-        elif choice == "3":  # Libérer une table
+        elif choice == "3":
             table_num = get_user_input("Number of table to free", int)
             if table_mgr.free_table(table_num):
                 print(f"✓ Table {table_num} freed.")
@@ -160,9 +160,10 @@ def handle_staff_management(staff_mgr: StaffManager) -> None:
 def main() -> None:
     """Main function."""
     menu_mgr = MenuManager()
-    order_mgr = OrderManager()
-    staff_mgr = StaffManager()
     table_mgr = TableManager(num_tables=15)
+    order_mgr = OrderManager()              # FIX: instanciation sans argument (table_manager optionnel maintenant)
+    order_mgr.set_table_manager(table_mgr)  # FIX: injection du table_manager après construction
+    staff_mgr = StaffManager()
 
     seed_initial_data(menu_mgr, staff_mgr)
     menu_mgr.save()
@@ -194,5 +195,7 @@ def main() -> None:
             print("✗ Invalid option.")
 
 
+if __name__ == "__main__":
+    main()
 if __name__ == "__main__":
     main()
