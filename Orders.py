@@ -12,16 +12,18 @@ from utils import generate_id
 
 
 class OrderManager:
-    def __init__(self, table_manager: 'TableManager') -> None:
+    def __init__(self, table_manager: 'TableManager' = None) -> None:
         self.__active_orders: Dict[str, Order] = {}
         self.__completed_orders: List[Order] = []
         self.__table_manager = table_manager
         self.load()
 
+        def set_table_manager(self, table_manager: 'TableManager') -> None:
+            self.__table_manager = table_manager
+
     def create_order(self, table_number: int, server_name: str) -> Order:
         if not (1 <= table_number <= MAX_TABLE_NUMBER):
             raise ValueError(f"Invalid table number (1-{MAX_TABLE_NUMBER})")
-        
         order_id = generate_id("CMD")
         order = Order(order_id, table_number, server_name)
         self.__active_orders[order_id] = order
@@ -49,7 +51,8 @@ class OrderManager:
             return False
             
         self.__completed_orders.append(order)
-        self.__table_manager.free_table(order.table_number)
+        if self.__table_manager:
+            self.__table_manager.free_table(order.table_number)
         return True
 
     def _load_orders_from_file(self) -> List[dict]:
@@ -82,8 +85,11 @@ class OrderManager:
 
     def _get_paid_status_value(self) -> str:
         if isinstance(order_STATUS, dict):
-            return order_STATUS.get("PAID") or "PAID"
-        return "PAID"
+            return order_STATUS.get("paid", "paid") 
+        for s in order_STATUS:
+            if s.lower() == "paid":
+                return s
+        return "paid"
 
     def _is_order_paid(self, order_obj: Optional[Order] = None, order_dict: Optional[dict] = None) -> bool:
         paid_value = self._get_paid_status_value()
@@ -148,7 +154,7 @@ class OrderManager:
         today = datetime.date.today()
         total = 0.0
         for order in self.__completed_orders:
-            created_at = getattr(order, "created_at", None)
+            created_at = getattr(order, "created_at", None) or getattr(order, "timestamp", None)
             if isinstance(created_at, str):
                 created_at = self._normalize_created_at(created_at)
             if created_at is None:
