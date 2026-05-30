@@ -88,7 +88,7 @@ def get_user_input(prompt: str, input_type: type = str, error_msg: str = None):
                 continue
             return input_type(value)
         except ValueError:
-            msg = error_msg or f"  ✗ IInvalid input. Please enter a {input_type.__name__}."
+            msg = error_msg or f"  ✗ Invalid input. Please enter a {input_type.__name__}."
             print(msg)
 
 
