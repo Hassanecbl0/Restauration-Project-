@@ -8,7 +8,7 @@ CURRENCY_SYMBOL: str = "F CFA"
 
 DATA_DIR = Path("data")
 MENU_FILE: Path = DATA_DIR / "menu.json"
-ORDERS_FILE: Path = DATA_DIR / "orders.txt"
+ORDERS_FILE: Path = DATA_DIR / "orders.json"
 STAFF_FILE: Path = DATA_DIR / "staff.csv"
 
 ORDER_STATUS: tuple[str, ...] = (
