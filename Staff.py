@@ -62,9 +62,9 @@ class StaffManager:
     def load(self) -> None:
         """Loads staff from CSV."""
         self.__employees = [
-            Staff(name=r["name"], role=r["role"], salary=float(r["salary"]),
-                  phone=r["phone"], is_on_shift=r.get("is_on_shift", "False") == "True")
-            for r in file_handler.load_staff_from_csv()
+            Staff(name=r["Name"], role=r["Role"], salary=float(r["Salary"]),
+                  phone=r["Phone"], is_on_shift=r.get("In Shift", "No") == "Yes")
+            for r in file_handler.load_staff_from_CSV()
         ]
         print(f"✓ {len(self.__employees)} employees loaded from CSV.")
 
